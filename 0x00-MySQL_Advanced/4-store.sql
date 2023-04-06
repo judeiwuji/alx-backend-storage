@@ -5,6 +5,6 @@ CREATE TRIGGER `order_trigger` AFTER INSERT ON `orders`
 FOR EACH ROW
 BEGIN
     UPDATE `items` SET `quantity` =  `quantity` - NEW.number 
-    WHERE `name` = New.item_name and `quantity` >= NEW.number;
+    WHERE `name` = New.item_name and `quantity` > 0;
 END;
 DELIMITER ;$$
