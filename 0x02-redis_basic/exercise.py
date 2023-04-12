@@ -3,6 +3,7 @@
 import redis
 from uuid import uuid4
 from typing import Union, Callable
+from functools import wraps
 
 
 class Cache:
@@ -19,7 +20,8 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Callable = None) -> Union[str, bytes, int, float, None]:
+    def get(self, key: str, fn: Callable[[bytes], Union[str, bytes, int, float]] = None)\
+            -> Union[str, bytes, int, float, None]:
         """Returns a stored data"""
         data = self._redis.get(key)
         if data != None and fn != None:
