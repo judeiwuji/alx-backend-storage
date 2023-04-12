@@ -6,6 +6,22 @@ from typing import Union, Callable
 from functools import wraps
 
 
+def count_calls(method: Callable[[], str]):
+    """A decorator function"""
+    @wraps(method)
+    def wrapper(*args, **kwargs):
+        obj = args[0]
+        key = method.__qualname__
+        redis = obj._redis
+
+        if redis.get(key) == None:
+            redis.set(key, 1)
+        else:
+            redis.incr(key)
+        return method(*args, **kwargs)
+    return wrapper
+
+
 class Cache:
     """An implemetation of a caching service"""
 
@@ -14,6 +30,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """Stores data to redis"""
         key = str(uuid4())
