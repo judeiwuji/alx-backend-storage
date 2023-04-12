@@ -2,7 +2,7 @@
 """Writing strings to Redis"""
 import redis
 from uuid import uuid4
-from typing import Union
+from typing import Union, Callable
 
 
 class Cache:
@@ -18,3 +18,10 @@ class Cache:
         key = str(uuid4())
         self._redis.set(key, data)
         return key
+
+    def get(self, key: str, fn: Callable = None) -> Union[str, bytes, int, float, None]:
+        """Returns a stored data"""
+        data = self._redis.get(key)
+        if data != None and fn != None:
+            data = fn(data)
+        return data
