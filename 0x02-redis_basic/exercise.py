@@ -27,3 +27,11 @@ class Cache:
         if data != None and fn != None:
             data = fn(data)
         return data
+
+    def get_str(self, key: str) -> Union[str, bytes, int, float, None]:
+        """Returns a stored data as string"""
+        return self.get(key, str)
+
+    def get_int(self, key: str) -> Union[str, bytes, int, float, None]:
+        """Returns a stored data as int"""
+        return self.get(key, int)
