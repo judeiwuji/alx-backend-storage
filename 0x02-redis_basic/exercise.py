@@ -10,7 +10,7 @@ def count_calls(method: Callable[[Union[str, bytes, int, float]], str])\
         -> Callable:
     """A decorator function"""
     @wraps(method)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs) -> str:
         """A wrapper function"""
         obj = args[0]
         key = method.__qualname__
