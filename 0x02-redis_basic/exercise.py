@@ -6,10 +6,11 @@ from typing import Union, Callable
 from functools import wraps
 
 
-def count_calls(method: Callable[[], str]):
+def count_calls(method: Callable[[Union[str, bytes, int, float]], str]):
     """A decorator function"""
     @wraps(method)
     def wrapper(*args, **kwargs):
+        """A wrapper function"""
         obj = args[0]
         key = method.__qualname__
         redis = obj._redis
