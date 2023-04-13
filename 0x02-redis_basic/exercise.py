@@ -58,7 +58,8 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Callable[[bytes], Union[str, bytes, int, float]] = None)\
+    def get(self, key: str, fn:
+            Union[Callable[[bytes], Union[str, bytes, int, float]], None] = None)\
             -> Union[str, bytes, int, float, None]:
         """Returns a stored data"""
         data = self._redis.get(key)
