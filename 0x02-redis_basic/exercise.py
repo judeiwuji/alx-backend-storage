@@ -16,9 +16,9 @@ def count_calls(method: Callable)\
         key = method.__qualname__
 
         if self._redis.get(method.__qualname__) is None:
-            self._redis.set(key, 1)
+            self._redis.set(method.__qualname__, 1)
         else:
-            self._redis.incr(key)
+            self._redis.incr(method.__qualname__)
         return method(*args, **kwargs)
     return wrapper
 
