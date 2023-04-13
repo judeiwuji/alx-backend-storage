@@ -26,4 +26,4 @@ def get_page_decorator(fn: Callable) -> Callable:
 @get_page_decorator
 def get_page(url: str) -> str:
     """Gets a web page"""
-    return requests.get(url)
+    return requests.get(url).content.decode('utf-8')
