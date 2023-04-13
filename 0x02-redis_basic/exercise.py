@@ -15,7 +15,7 @@ def count_calls(method: Callable)\
         self = args[0]
         key = method.__qualname__
 
-        if self._redis.get(key) is None:
+        if self._redis.get(method.__qualname__) is None:
             self._redis.set(key, 1)
         else:
             self._redis.incr(key)
