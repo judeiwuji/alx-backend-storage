@@ -37,7 +37,7 @@ def call_history(method: Callable) -> Callable:
         input = str(args[1:])
         output = method(*args, **kwargs)
         redis.rpush(inputKey, input)
-        redis.rpush(outputKey, str(output))
+        redis.rpush(outputKey, output)
         return output
     return wrapper
 
