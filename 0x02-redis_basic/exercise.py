@@ -53,7 +53,7 @@ def replay(method: Callable) -> None:
     inputKey = "{}:inputs".format(key)
     outputKey = "{}:outputs".format(key)
 
-    print("{} was called {:d}".format(key, int(redis.get(key))))
+    print("{} was called {:d} times:".format(key, int(redis.get(key))))
     for d in zip(redis.lrange(inputKey, 0, -1),
                  redis.lrange(outputKey, 0, -1)):
         print("{}(*{}) -> {}".format(key,
