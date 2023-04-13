@@ -14,11 +14,11 @@ def count_calls(method: Callable)\
         """A wrapper function"""
         if "Cache.{}".format(method.__name__) == method.__qualname__:
             self = args[0]
-            method.name = method.__qualname__
-            if self._redis.get(method.name) is None:
-                self._redis.set(method.name, 1)
+            key = method.__qualname__
+            if self._redis.get(key) is None:
+                self._redis.set(key, 1)
             else:
-                self._redis.incr(method.name)
+                self._redis.incr(key)
         return method(*args, **kwargs)
     return wrapper
 
@@ -31,12 +31,11 @@ def call_history(method: Callable) -> Callable:
         key = method.__qualname__
         inputKey = "{}:inputs".format(key)
         outputKey = "{}:outputs".format(key)
-        obj = args[0]
-        redis = obj._redis
+        self = args[0]
         input = str(args[1:])
         output = method(*args, **kwargs)
-        redis.rpush(inputKey, input)
-        redis.rpush(outputKey, output)
+        self._redis.rpush(inputKey, input)
+        self._redis.rpush(outputKey, output)
         return output
     return wrapper
 
