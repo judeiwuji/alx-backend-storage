@@ -16,7 +16,7 @@ def count_calls(method: Callable)\
         key = method.__qualname__
         redis = obj._redis
 
-        if redis.get(key) == None:
+        if redis.get(key) is None:
             redis.set(key, 1)
         else:
             redis.incr(key)
@@ -56,7 +56,8 @@ def replay(method: Callable) -> None:
     outputKey = "{}:outputs".format(key)
 
     print("{} was called {:d}".format(key, int(redis.get(key))))
-    for d in zip(redis.lrange(inputKey, 0, -1), redis.lrange(outputKey, 0, -1)):
+    for d in zip(redis.lrange(inputKey, 0, -1),
+                 redis.lrange(outputKey, 0, -1)):
         print("{}(*{}) -> {}".format(key,
               d[0].decode('utf8'), d[1].decode('utf8')))
 
@@ -78,11 +79,13 @@ class Cache:
         return key
 
     def get(self, key: str, fn:
-            Union[Callable[[bytes], Union[str, bytes, int, float]], None] = None)\
+            Union[
+                Callable[[bytes],
+                         Union[str, bytes, int, float]], None] = None)\
             -> Union[str, bytes, int, float, None]:
         """Returns a stored data"""
         data = self._redis.get(key)
-        if data != None and fn != None:
+        if data is not None and fn is not None:
             data = fn(data)
         return data
 
