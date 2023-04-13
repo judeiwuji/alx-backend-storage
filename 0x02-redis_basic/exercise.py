@@ -2,7 +2,7 @@
 """Writing strings to Redis"""
 import redis
 from uuid import uuid4
-from typing import Union, Callable
+from typing import Union, Callable, Any
 from functools import wraps
 
 
@@ -10,7 +10,7 @@ def count_calls(method: Callable)\
         -> Callable:
     """A decorator function"""
     @wraps(method)
-    def wrapper(*args, **kwargs) -> str:
+    def wrapper(*args, **kwargs) -> Any:
         """A wrapper function"""
         obj = args[0]
         key = method.__qualname__
@@ -27,7 +27,7 @@ def count_calls(method: Callable)\
 def call_history(method: Callable) -> Callable:
     """Stores function call history"""
     @wraps(method)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs) -> Any:
         """Wrapper function"""
         key = method.__qualname__
         inputKey = "{}:inputs".format(key)
