@@ -12,14 +12,13 @@ def count_calls(method: Callable)\
     @wraps(method)
     def wrapper(*args, **kwargs) -> Any:
         """A wrapper function"""
-        obj = args[0]
+        self = args[0]
         key = method.__qualname__
-        redis = obj._redis
 
-        if redis.get(key) is None:
-            redis.set(key, 1)
+        if self._redis.get(key) is None:
+            self._redis.set(key, 1)
         else:
-            redis.incr(key)
+            self._redis.incr(key)
         return method(*args, **kwargs)
     return wrapper
 
