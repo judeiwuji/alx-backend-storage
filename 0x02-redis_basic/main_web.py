@@ -11,3 +11,5 @@ if __name__ == "__main__":
         html = get_page(url)
         print(html)
         print(redis.get("count:{}".format(url)))
+
+        print(get_page.__annotations__)

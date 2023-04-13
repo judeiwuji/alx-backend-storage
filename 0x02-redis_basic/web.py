@@ -11,7 +11,7 @@ redis = redis.Redis()
 def get_page_decorator(fn: Callable) -> Callable:
     """Decorates get_page"""
     @wraps(fn)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs) -> str:
         """Wrapped get_page"""
         url = args[0]
         key = "count:{}".format(url)
