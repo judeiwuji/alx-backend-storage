@@ -42,6 +42,25 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
+def replay(method: Callable) -> None:
+    """Displays the call history of a particular
+    function.
+
+    Args:
+        method(Callable)
+    """
+    obj = getattr(method, '__self__', None)
+    redis = obj._redis
+    key = method.__qualname__
+    inputKey = "{}:inputs".format(key)
+    outputKey = "{}:outputs".format(key)
+
+    print("{} was called {:d}".format(key, int(redis.get(key))))
+    for d in zip(redis.lrange(inputKey, 0, -1), redis.lrange(outputKey, 0, -1)):
+        print("{}(*{}) -> {}".format(key,
+              d[0].decode('utf8'), d[1].decode('utf8')))
+
+
 class Cache:
     """An implemetation of a caching service"""
 
