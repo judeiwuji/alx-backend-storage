@@ -14,11 +14,11 @@ def count_calls(method: Callable)\
         """A wrapper function"""
         if "Cache.{}".format(method.__name__) == method.__qualname__:
             self = args[0]
-            key = method.__qualname__
-            if self._redis.get(key) is None:
-                self._redis.set(key, 1)
+            method_name = method.__qualname__
+            if self._redis.get(method_name) is None:
+                self._redis.set(method_name, 1)
             else:
-                self._redis.incr(key)
+                self._redis.incr(method_name)
         return method(*args, **kwargs)
     return wrapper
 
