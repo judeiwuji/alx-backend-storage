@@ -8,7 +8,7 @@ from typing import Callable
 redis = redis.Redis()
 
 
-def get_page_decorator(fn: Callable) -> Callable:
+def get_page_decorator(fn: Callable[[str], str]) -> Callable:
     """Decorates get_page"""
     @wraps(fn)
     def wrapper(*args, **kwargs) -> str:
