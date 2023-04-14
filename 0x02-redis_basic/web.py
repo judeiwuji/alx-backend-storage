@@ -14,7 +14,7 @@ def get_page_decorator(fn: Callable) -> Callable:
     def wrapper(*args, **kwargs) -> str:
         """Wrapped get_page"""
         url = args[0]
-        key = "count:{}".format(url)
+        key = f"count:{url}"
         if redis.get(key) is None:
             redis.setex(key, timedelta(seconds=10), 1)
         else:
