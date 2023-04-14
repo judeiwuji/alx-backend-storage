@@ -16,9 +16,8 @@ def get_page_decorator(fn: Callable[[str], str]) -> Callable:
         url = args[0]
         key = f"count:{url}"
         if redis.get(key) is None:
-            redis.setex(key, timedelta(seconds=10), 1)
-        else:
-            redis.incr(key)
+            redis.setex(key, timedelta(seconds=10), 0)
+        redis.incr(key)
         return fn(*args, **kwargs)
     return wrapper
 
