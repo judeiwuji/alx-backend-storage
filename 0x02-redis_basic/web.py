@@ -14,10 +14,9 @@ def get_page_decorator(fn: Callable[[str], str]) -> Callable:
     def wrapper(*args, **kwargs) -> str:
         """Wrapped get_page"""
         url = args[0]
-        key = f"count:{url}"
-        if redis.get(key) is None:
-            redis.setex(key, timedelta(seconds=10), 0)
-        redis.incr(key)
+        if redis.get(f"count:{url}") is None:
+            redis.setex(f"count:{url}", timedelta(seconds=10), 0)
+        redis.incr(f"count:{url}")
         return fn(*args, **kwargs)
     return wrapper
 
@@ -25,4 +24,5 @@ def get_page_decorator(fn: Callable[[str], str]) -> Callable:
 @get_page_decorator
 def get_page(url: str) -> str:
     """Gets a web page"""
-    return "{}".format(requests.get(url, headers={"User-Agent": "Requests"}).content)
+    html = requests.get(url, headers={"User-Agent": "Requests"}).content
+    return html
